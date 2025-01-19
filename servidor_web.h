@@ -31,7 +31,7 @@ String SendHTML(bool refrescar) {
   ptr += "<body>\n";
   ptr += "<h1>Control Rover</h1>\n";
 
-  stamp.getDateTime(unixtime);
+ // stamp.getDateTime(unixtime);
   ptr += "V 1.0 UnixTime - Date - Time: " + String(unixtime)+ " - "  + "\n";
   ptr += String(stamp.year) + "/" + String(stamp.month) + "/" + String(stamp.day) + " - " ;
   ptr += "  " + String(stamp.hour) + ":" + String(stamp.minute) + ":" + String(stamp.second);
@@ -79,11 +79,36 @@ void handleSetValue() {
   server.send(204, "text/plain", ""); // Respuesta sin contenido
 }
 
+void handle_adelante() {
+  Serial.println("adelante html");
+  rover_adelante();
+  server.send(204, "text/plain", ""); // Respuesta sin contenido
+}
+
+void handle_atras() {
+  rover_atras();
+  server.send(204, "text/plain", ""); // Respuesta sin contenido
+}
+
+void handle_giroizquierda() {
+  rover_giro_izda();
+  server.send(204, "text/plain", ""); // Respuesta sin contenido
+}
+
+void handle_giroderecha() {
+  rover_giro_dcha();
+  server.send(204, "text/plain", ""); // Respuesta sin contenido
+}
+
 void init_webserver()
 {
   server.on("/", handle_index); 
   server.on("/index.html", handle_index); 
   server.on("/set", handleSetValue);
+  server.on("/adelante", handle_adelante);
+  server.on("/atras", handle_atras);
+  server.on("/giroizquierda", handle_giroizquierda);
+  server.on("/giroderecha", handle_giroderecha);
   server.onNotFound(handle_NotFound); 
   server.begin();
   Serial.println("Servidor HTTP iniciado");

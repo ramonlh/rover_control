@@ -1,8 +1,10 @@
 
 
 /* Añade tu SSID & Clave para acceder a tu Wifi */
-const char* ssid = "MOVISTAR_8453";  // Tu SSID
-const char* password = "18921892";  //Tu Clave
+const char* ssid = "MOVISTAR_EDE0";  // Tu SSID
+const char* password = "Trujillo31";  //Tu Clave
+//const char* ssid = "MOVISTAR_8453";  // Tu SSID
+//const char* password = "18921892";  //Tu Clave
 IPAddress local_IP(192, 168, 1, 91);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 255, 0);
