@@ -3,6 +3,8 @@
 /* Añade tu SSID & Clave para acceder a tu Wifi */
 const char* ssid = "TU_WIFI";  // Tu SSID
 const char* password = "TU_PASSWORD_WIFI";  //Tu Clave
+//const char* ssid = "TU_WIFI";  // Tu SSID
+//const char* password = "TU_PASSWORD_WIFI";  //Tu Clave
 IPAddress local_IP(192, 168, 1, 91);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 255, 0);

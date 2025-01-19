@@ -8,7 +8,7 @@ const uint8_t pin_motor[4] = {0, 1, 2, 3};                      // salidas pwm d
 static Output low = Output::Low;
 static Output high = Output::High;
 
-static int rover_speed = 0;
+static int rover_speed = 1000;
 
 void pinModeMux(int pin, int mode)
 {
@@ -54,9 +54,14 @@ void set_motor(int motor, int dir, int speed)  // motor: 1-4, speed: 0-4095
 
 void set_speed_rover(int velocidad)
 {
+  if (velocidad > 4000)
+    velocidad = 4000;
+  if (velocidad < 600)
+    velocidad = 600;
+  rover_speed = velocidad;
   for (int i=0; i<4; i++)
     {
-    speed_motor.setValue(i, velocidad);
+    speed_motor.setValue(i,   rover_speed);
     }
 }
 
@@ -68,6 +73,7 @@ void init_motores()
   init_MCP23017();
   // Initialize_PCA9685
   init_PCA9685(1600);   // 50 = freq
+  
   for (int i=0; i<4; i++)
     {
     speed_motor.setValue(i, 1);
@@ -76,7 +82,7 @@ void init_motores()
     digitalWriteMux(pin_dir[i][0], LOW);  // disable
     digitalWriteMux(pin_dir[i][1], LOW);  // disable
     }
-  rover_speed = 650;
+  rover_speed = 1000;
 }
 
 void rover_stop()
@@ -133,5 +139,29 @@ void rover_rot_dcha()
     set_motor(2, 1, rover_speed);    // motor, sentido giro, velocidad
     set_motor(3, 0, rover_speed);    // motor, sentido giro, velocidad
     set_motor(4, 0, rover_speed);    // motor, sentido giro, velocidad
+}
+
+
+void conservar_rumbo()
+{
+  getpos_rover();
+  if (direccion < angleZ)
+    {
+      set_motor(1, 1, rover_speed-600);  
+      set_motor(2, 1, rover_speed-600);  
+      delay(500);
+      set_motor(1, 1, rover_speed);  
+      set_motor(2, 1, rover_speed);        // girar a la izquierda
+    }
+  else if (direccion > angleZ)
+    {
+       // girar a la derecha
+      set_motor(3, 1, rover_speed-600);  
+      set_motor(4, 1, rover_speed-600);  
+      delay(500);
+      set_motor(3, 1, rover_speed);  
+      set_motor(4, 1, rover_speed);        // girar a la izquierda
+    }
+
 }
 

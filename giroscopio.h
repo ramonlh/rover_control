@@ -1,21 +1,18 @@
 
-HardwareSerial mySerial(1);
-const int myRx = 4;
-const int myTx = 26;
 
 float angleX = 0.0;
 float angleY = 0.0;
 float angleZ = 0.0;
+float direccion;
 
 void init_giroscopio()
 {
-  mySerial.begin(9600, SERIAL_8N1, myRx, myTx);
-  JY901.attach(mySerial);
+  JY901.startIIC(0x50);
+  Serial.println("Giroscopio OK");
 }
 
 void getpos_rover()
 {
-  JY901.receiveSerialData();
   angleX = JY901.getRoll();
   angleY = JY901.getPitch();
   angleZ = JY901.getYaw();
