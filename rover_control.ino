@@ -44,6 +44,7 @@ void setup() {
   init_WiFi();
   init_webserver();
   init_websockets();
+  init_tcpserver();
   init_ota();
   init_motores();
   init_radio_control(pin_radio_control);
@@ -51,14 +52,13 @@ void setup() {
   init_giroscopio();
 }
 
-int rumbo_adelante=0;
 void loop() {
   if ((rumbo_adelante==1) || (rumbo_adelante==2))
     {
-      conservar_rumbo();
+    conservar_rumbo();
     }
-  
-  webSocket.loop();
+  handle_tcpserver();
+  //webSocket.loop();
   server.handleClient();
   ArduinoOTA.handle();
   if ((millis() - time1) > timedelay1)
@@ -67,69 +67,70 @@ void loop() {
     }
 
   // revisa si se ha pulsado un botón del mando de radio
-    int boton_RC = lee_RC();
-    // si se ha pulsado un botón, se mira que botón y se hace algo
-    if (boton_RC == 1)
-      {
-      Serial.println("Adelante");
-      rumbo_adelante=1;
-      getpos_rover();
-      direccion=angleZ;
-      rover_adelante();
-      }
-    if (boton_RC == 2)
-      {
-      //rumbo_adelante=2;
-      Serial.println("Atrás");
-      rover_atras();
-      }
-    if (boton_RC == 3)
-      {
-      rumbo_adelante=0;
-      rover_giro_izda();
-      }    
-    if (boton_RC == 4)
-      {
-      rumbo_adelante=0;
-      rover_giro_dcha();
-      }
-    if (boton_RC == 5)
-      {
-      rumbo_adelante=0;
-      rover_rot_izda();
-      }    
-    if (boton_RC == 6)
-      {
-      rumbo_adelante=0;
-      rover_rot_dcha();
-      }
-    if (boton_RC == 9)
-      {
-      //rumbo_adelante=0;
-      set_speed_rover(rover_speed-500);
-      Serial.println(rover_speed);      }    
-    if (boton_RC == 10)
-      {
-      //rumbo_adelante=0;
-      set_speed_rover(rover_speed+500);
-      }
-    else if (boton_RC == 15)
-      {
-        //Serial.println("STOP");
-      rover_stop();
-      rumbo_adelante=0;
-      }
-    else if (boton_RC == 16)
-      {
-        //Serial.println("STOP");
-      rover_stop();
-      rumbo_adelante=0;
-      }
-
+  int boton_RC = lee_RC();
+  //Serial.println("RC leido");
+  // si se ha pulsado un botón, se mira que botón y se hace algo
+  if (boton_RC == 1)
+    {
+    Serial.println("Adelante");
+    rumbo_adelante=1;
+    getpos_rover();
+    direccion=angleZ;
+    rover_adelante();
+    }
+  if (boton_RC == 2)
+    {
+    //rumbo_adelante=2;
+    Serial.println("Atrás");
+    rover_atras();
+    }
+  if (boton_RC == 3)
+    {
+    rumbo_adelante=0;
+    rover_giro_izda();
+    }    
+  if (boton_RC == 4)
+    {
+    rumbo_adelante=0;
+    rover_giro_dcha();
+    }
+  if (boton_RC == 5)
+    {
+    rumbo_adelante=0;
+    rover_rot_izda();
+    }    
+  if (boton_RC == 6)
+    {
+    rumbo_adelante=0;
+    rover_rot_dcha();
+    }
+  if (boton_RC == 9)
+    {
+    //rumbo_adelante=0;
+    set_speed_rover(rover_speed-500);
+    Serial.println(rover_speed);      }    
+  if (boton_RC == 10)
+    {
+    //rumbo_adelante=0;
+    set_speed_rover(rover_speed+500);
+    }
+  else if (boton_RC == 15)
+    {
+    //Serial.println("STOP");
+    rover_stop();
+    rumbo_adelante=0;
+    }
+  else if (boton_RC == 16)
+    {
+    //Serial.println("STOP");
+    rover_stop();
+    rumbo_adelante=0;
+    }
 
   // mirar la distancia del sensor de ultrasonidos
   int distancia = distancia_US();
   delay(5);
+  Serial.println(distancia);
   if (rumbo_adelante == 1)
     {
     if (distancia <= 15)

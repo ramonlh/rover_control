@@ -35,12 +35,6 @@ int lee_RC()
   int boton_RC = 0;
   if (mySwitch.available()) {
     long code= mySwitch.getReceivedValue();
-    /*
-    Serial.print("Received ");    Serial.print(code);
-    Serial.print(" / ");    Serial.print( mySwitch.getReceivedBitlength() );
-    Serial.print("bit ");    Serial.print("Protocol: ");
-    Serial.println(mySwitch.getReceivedProtocol() );
-    */
     mySwitch.resetAvailable();
     boton_RC = decode_RC(code);
     if (boton_RC != 0)

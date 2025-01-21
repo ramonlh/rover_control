@@ -9,6 +9,8 @@ static Output low = Output::Low;
 static Output high = Output::High;
 
 static int rover_speed = 1000;
+int rumbo_adelante=0;
+
 
 void pinModeMux(int pin, int mode)
 {
