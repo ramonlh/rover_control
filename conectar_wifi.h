@@ -1,3 +1,4 @@
+#include "WiFiType.h"
 
 
 /* Añade tu SSID & Clave para acceder a tu Wifi */
@@ -16,12 +17,21 @@ const char *passwordAP = "12341234";
 
 void  init_WiFi()
 {
-    WiFi.mode(WIFI_STA);
+  Serial.println("\nIniciando AP");
+  WiFi.mode(WIFI_AP_STA);
+  if (!WiFi.softAP(ssidAP, passwordAP)) {
+    Serial.println("Error al crear Punto de Acceso");
+    while (1);
+    }
+  IPAddress myIP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(myIP);
+
+
   if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
     Serial.println("STA Failed to configure");
   }
   WiFi.begin(ssid, password);
-  Serial.println("");
 
   int intentos=0;
   Serial.print("Conectando a ");    Serial.print(ssid);
@@ -39,6 +49,7 @@ void  init_WiFi()
     }
   else
     {
+      /*
     Serial.println();
     if (!WiFi.softAP(ssidAP, passwordAP)) {
       log_e("Error al crear Punto de Acceso");
@@ -47,6 +58,7 @@ void  init_WiFi()
     IPAddress myIP = WiFi.softAPIP();
     Serial.print("AP IP address: ");
     Serial.println(myIP);
+    */
     }
 
 }
