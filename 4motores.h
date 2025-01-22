@@ -70,7 +70,7 @@ void set_speed_rover(int velocidad)
 void init_motores()
 {
   // Initialize I²C
-  Wire.begin(21,22);
+  Wire.begin(pin_SDA,pin_SCL);
   // Initialize_MCP23017
   init_MCP23017();
   // Initialize_PCA9685

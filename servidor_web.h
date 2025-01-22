@@ -151,13 +151,41 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length)
     }
 }
 
+WiFiClient tcpclient;
+
+long timedelay10tcp = 10000;
+long time10tcp = 0;
+
+void cosas_cada_10segundostcp()
+{
+  if (tcpclient) 
+    {  
+     Serial.println("tcpclient OK"); 
+     if (tcpclient.connected()) 
+       {
+        tcpclient.println(String("t") + String(valores_DHT11.temperature));
+        tcpclient.println(String("h") + String(valores_DHT11.humidity));
+       }
+    }
+  else
+    {  
+     Serial.println("tcpclient DESCONECTADO"); 
+    }
+  time10tcp = millis();
+}
+
 void handle_tcpserver()
 {
-  WiFiClient tcpclient = tcpserver.available();
-  
-  if (tcpclient) {
+  tcpclient = tcpserver.available();
+  if (tcpclient.connected()) {
     Serial.println("Cliente conectado.");
-    while (tcpclient.connected()) {
+    while (tcpclient.connected()) 
+      {
+      if ((millis() - time10tcp) > timedelay10tcp)
+        {
+        cosas_cada_10segundostcp();  
+        }
+      control_obstaculoUS();
       if (tcpclient.available()) {
         String data = tcpclient.readStringUntil('\n');
         Serial.println("Recibido tcp: " + data);
