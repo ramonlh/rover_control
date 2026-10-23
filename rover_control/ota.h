@@ -1,8 +1,10 @@
+#include "secrets.h"
+
 
 void init_ota()
 {
   ///////////////////////////////
-  ArduinoOTA.setPassword("TU_PASSWORD_OTA");
+  ArduinoOTA.setPassword(SECRET_OTA_PASSWORD);
   ArduinoOTA
     .onStart([]() {
       String type;

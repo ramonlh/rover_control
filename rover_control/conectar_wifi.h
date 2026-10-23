@@ -1,11 +1,10 @@
 #include "WiFiType.h"
+#include "secrets.h"
 
 
 /* Añade tu SSID & Clave para acceder a tu Wifi */
-const char* ssid = "TU_WIFI";  // Tu SSID
-const char* password = "TU_PASSWORD_WIFI";  //Tu Clave
-//const char* ssid = "TU_WIFI";  // Tu SSID
-//const char* password = "TU_PASSWORD_WIFI";  //Tu Clave
+const char* ssid = SECRET_WIFI_SSID;  // Tu SSID (en secrets.h)
+const char* password = SECRET_WIFI_PASSWORD;  //Tu Clave (en secrets.h)
 IPAddress local_IP(192, 168, 1, 91);
 IPAddress gateway(192, 168, 1, 1);
 IPAddress subnet(255, 255, 255, 0);
